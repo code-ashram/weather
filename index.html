@@ -1,29 +1,162 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather</title>
-  </head>
-  <body >
-    <div id="app" class="app__body container-sm">
-      <div class="city">
+</head>
+<body>
+<div id="app" class="app__body container-sm">
+    <div class="city">
         <p class="city__name">Gomel</p>
         <p class="city__current-temperature">19°</p>
         <p class="city__visibility">Mostly Clear</p>
         <div class="city__temperatures">
-          <p class="city__max-t">H: 88°</p>
-          <p class="city__min-t">M: 14°</p>
+            <p class="city__max-t">H: 88°</p>
+            <p class="city__min-t">M: 14°</p>
         </div>
-      </div>
-      <div class="forecast">
-        <div class="forecast__mode">
-          <button class="forecast__hourly btn btn-primary">Hourly Forecast</button>
-          <button class="forecast__weekly btn btn-primary">Weekly Forecast</button>
-        </div>
-      </div>
     </div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+    <div class="forecast">
+        <div class="forecast__mode">
+            <button class="forecast__hourly btn btn-primary">Hourly Forecast</button>
+            <button class="forecast__weekly btn btn-primary">Weekly Forecast</button>
+        </div>
+        <div id="forecastSlider" class="carousel slide">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Now</p>
+                            <div class="img-wrapper">
+                                <img src="src/img/light-night-rain.png" class="card-img-top" alt="...">
+                            </div>
+                            <p class="card-text">10</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Now</p>
+                            <div class="img-wrapper">
+                                <img src="src/img/light-night-rain.png" class="card-img-top" alt="...">
+                            </div>
+                            <p class="card-text">10</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Now</p>
+                            <div class="img-wrapper">
+                                <img src="src/img/light-rain.png" class="card-img-top" alt="...">
+                            </div>
+                            <p class="card-text">10</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Now</p>
+                            <div class="img-wrapper">
+                                <img src="src/img/night-fast-wind.png" class="card-img-top" alt="...">
+                            </div>
+                            <p class="card-text">10</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Now</p>
+                            <div class="img-wrapper">
+                                <img src="src/img/strong-rain.png" class="card-img-top" alt="...">
+                            </div>
+                            <p class="card-text">10</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Now</p>
+                            <div class="img-wrapper">
+                                <img src="src/img/tornado.png" class="card-img-top" alt="...">
+                            </div>
+                            <p class="card-text">10</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Now</p>
+                            <div class="img-wrapper">
+                                <img src="src/img/light-night-rain.png" class="card-img-top" alt="...">
+                            </div>
+                            <p class="card-text">10</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Now</p>
+                            <div class="img-wrapper">
+                                <img src="src/img/light-rain.png" class="card-img-top" alt="...">
+                            </div>
+                            <p class="card-text">10</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Now</p>
+                            <div class="img-wrapper">
+                                <img src="src/img/night-fast-wind.png" class="card-img-top" alt="...">
+                            </div>
+                            <p class="card-text">10</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Now</p>
+                            <div class="img-wrapper">
+                                <img src="src/img/strong-rain.png" class="card-img-top" alt="...">
+                            </div>
+                            <p class="card-text">10</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Now</p>
+                            <div class="img-wrapper">
+                                <img src="src/img/tornado.png" class="card-img-top" alt="...">
+                            </div>
+                            <p class="card-text">10</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#forecastSlider" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#forecastSlider" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</div>
+<script type="module" src="/src/main.ts"></script>
+</body>
 </html>
