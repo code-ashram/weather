@@ -1,1 +1,50 @@
 @import "node_modules/bootstrap/scss/bootstrap";
+
+p {
+  margin: 0;
+}
+
+.app__body {
+  padding: 0;
+  max-width: 390px;
+  height: 850px;
+  border: solid 1px white;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.city {
+  padding: 70px;
+}
+
+.city__name {
+  font-size: 34px;
+}
+
+.city__current-temperature {
+  font-size: 90px;
+  line-height: 1.1;
+}
+
+.city__temperatures {
+  display: flex;
+  justify-content: center;
+}
+
+.city__max-t {
+  margin-right: 15px;
+}
+
+.forecast {
+  border-top: white 1px solid;
+  border-bottom: white 1px solid;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.forecast__mode {
+  padding: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}

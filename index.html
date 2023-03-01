@@ -7,7 +7,22 @@
     <title>Weather</title>
   </head>
   <body >
-    <div id="app">
+    <div id="app" class="app__body container-sm">
+      <div class="city">
+        <p class="city__name">Gomel</p>
+        <p class="city__current-temperature">19°</p>
+        <p class="city__visibility">Mostly Clear</p>
+        <div class="city__temperatures">
+          <p class="city__max-t">H: 88°</p>
+          <p class="city__min-t">M: 14°</p>
+        </div>
+      </div>
+      <div class="forecast">
+        <div class="forecast__mode">
+          <button class="forecast__hourly btn btn-primary">Hourly Forecast</button>
+          <button class="forecast__weekly btn btn-primary">Weekly Forecast</button>
+        </div>
+      </div>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
