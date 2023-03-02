@@ -46,20 +46,37 @@ p {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  border-bottom: 1px solid white;
 }
 
-.carousel-inner {
+.forecast__list {
   display: flex;
-  padding: 1em;
+  padding: 20px;
+  overflow-x: scroll;
 }
 
-.carousel-item {
-  display: block;
-  margin-right: 0;
-  flex: 0 0 calc(100%/4)
+.forecast__card {
+  min-width: 55px;
+  cursor: pointer;
 }
 
-.card {
-  margin: 0 0.5em;
+.forecast__card:not(:last-child) {
+  margin-right: 14px;
 }
 
+.forecast__card-body {
+  padding: 5px;
+}
+
+.forecast__card-title {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.forecast__card-text {
+  font-weight: bold;
+}
+
+.weather__details {
+  text-align: left;
+}
