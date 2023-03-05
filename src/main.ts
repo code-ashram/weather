@@ -1,10 +1,11 @@
 // @ts-ignore
 import * as bootstrap from 'bootstrap'
 import './style.scss'
-import {getWeatherData} from './api'
+import { getCurrentWeather, getDailyWeather, getHourlyWeather } from './api'
 
-getWeatherData().then(result => console.log(result))
-
+getHourlyWeather().then(result => console.log(result))
+getDailyWeather().then(result => console.log(result))
+getCurrentWeather().then(result => console.log(result))
 
 
 

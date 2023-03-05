@@ -1,23 +1,72 @@
-export type Weather = {
-  'latitude': number,
-  'longitude': number,
-  'generationtime_ms': number,
-  'utc_offset_seconds': number,
-  'timezone': string,
-  'timezone_abbreviation': string,
-  'elevation': number,
-  'hourly_units': {
-    'time': string,
-    'temperature_2m': string,
-    'showers': string,
-    'visibility': string,
-    'windspeed_10m': string
-  },
-  'hourly': {
-    'time': string[],
-    'temperature_2m': number[],
-    'showers': number[],
-    'visibility': number[],
-    'windspeed_10m': number[]
-  }
+interface CommonData {
+  latitude: number,
+  longitude: number,
+  generationtime_ms: number,
+  utc_offset_seconds: number,
+  timezone: string,
+  timezone_abbreviation: string,
+  elevation: number,
 }
+
+type HourlyUnits = {
+    time: string,
+    temperature_2m: string,
+    precipitation_probability: string,
+    surface_pressure: string,
+    visibility: string,
+    windspeed_10m: string,
+    winddirection_10m: string
+}
+
+type Hourly = {
+    time: string[],
+    temperature_2m: number[],
+    precipitation_probability: number[],
+    surface_pressure: number[],
+    visibility: number[],
+    windspeed_10m: number[],
+    winddirection_10m: number[]
+}
+
+export interface HourlyWeather extends CommonData {
+  hourly: Hourly,
+  hourly_units: HourlyUnits
+}
+
+type DailyUnits = {
+  time: string,
+  temperature_2m_max: string,
+  temperature_2m_min: string,
+  uv_index_clear_sky_max: string,
+  precipitation_probability_max: string,
+  windspeed_10m_max: string,
+  winddirection_10m_dominant: string
+}
+
+type Daily = {
+  time: string[],
+  temperature_2m_max: number[],
+  temperature_2m_min: number[],
+  uv_index_clear_sky_max: number[],
+  precipitation_probability_max: number[],
+  windspeed_10m_max: number[],
+  winddirection_10m_dominant: number[],
+}
+
+export interface DailyWeather extends CommonData {
+  daily_units: DailyUnits,
+  daily: Daily
+}
+
+type Current = {
+  temperature: number,
+  windspeed: number,
+  winddirection: number,
+  weathercode: number,
+  time: string
+}
+
+export interface CurrentWeather extends CommonData {
+  current_weather: Current
+}
+
