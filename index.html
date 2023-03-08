@@ -8,10 +8,10 @@
 </head>
 <body>
 <div id="app" class="app__body container-sm">
-    <div class="city">
+    <div class="city" id="city">
         <p class="city__name">Gomel</p>
-        <p class="city__current-temperature">19°</p>
-        <p class="city__visibility">Mostly Clear</p>
+        <p class="city__current-temperature">19</p>
+        <p class="city__weather-code">Mostly Clear</p>
         <div class="city__temperatures">
             <p class="city__max-t">H: 88°</p>
             <p class="city__min-t">M: 14°</p>
@@ -19,7 +19,7 @@
     </div>
     <div class="forecast">
         <!-- Nav tabs -->
-        <ul class="nav nav-tabs forecast__mode" id="forecastTab" role="tablist">
+        <ul class="nav nav-tabs forecast__mode" id="myTab" role="tablist">
             <li class="nav-item forecast__tab-item" role="presentation">
                 <button class="nav-link forecast__tab-btn active" id="hourlyTab" data-bs-toggle="tab" data-bs-target="#home" type="button"
                         role="tab" aria-controls="home" aria-selected="true">Hourly Forecast
