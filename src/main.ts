@@ -2,7 +2,7 @@
 import * as bootstrap from 'bootstrap'
 import './style.scss'
 import { getCurrentWeather, getDailyWeather, getHourlyWeather } from './api'
-import { showCurrentCityWeather } from './dom'
+import { showCurrentWeather } from './dom'
 
 
 getHourlyWeather().then(result => console.log(result))
@@ -20,4 +20,4 @@ triggerTabList.forEach(triggerEl => {
   })
 })
 
-showCurrentCityWeather()
+showCurrentWeather()

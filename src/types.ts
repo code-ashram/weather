@@ -41,6 +41,7 @@ type DailyUnits = {
   precipitation_probability_max: string,
   windspeed_10m_max: string,
   winddirection_10m_dominant: string
+  weathercode: string,
 }
 
 type Daily = {
@@ -51,6 +52,7 @@ type Daily = {
   precipitation_probability_max: number[],
   windspeed_10m_max: number[],
   winddirection_10m_dominant: number[],
+  weathercode: number[],
 }
 
 export interface DailyWeather extends CommonData {
@@ -68,5 +70,6 @@ type Current = {
 
 export interface CurrentWeather extends CommonData {
   current_weather: Current
+  daily: Daily
 }
 
