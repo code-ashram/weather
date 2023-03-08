@@ -7,5 +7,14 @@ getHourlyWeather().then(result => console.log(result))
 getDailyWeather().then(result => console.log(result))
 getCurrentWeather().then(result => console.log(result))
 
+const triggerTabList = document.querySelectorAll('#myTab button')
+triggerTabList.forEach(triggerEl => {
+  const tabTrigger = new bootstrap.Tab(triggerEl)
+
+  triggerEl.addEventListener('click', event => {
+    event.preventDefault()
+    tabTrigger.show()
+  })
+})
 
 
