@@ -21,3 +21,14 @@ triggerTabList.forEach(triggerEl => {
 })
 
 showCurrentWeather()
+
+const date = new Date("2023-03-12");
+
+const options: Intl.DateTimeFormatOptions = {
+  day: 'numeric',
+  month: 'short',
+}
+
+const string = date.toLocaleDateString('en-GB', options)
+
+console.log(string)
