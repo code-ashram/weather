@@ -44,7 +44,7 @@ type DailyUnits = {
   weathercode: string,
 }
 
-type Daily = {
+export type Daily = {
   time: string[],
   temperature_2m_max: number[],
   temperature_2m_min: number[],
