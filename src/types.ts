@@ -9,23 +9,24 @@ interface CommonData {
 }
 
 type HourlyUnits = {
-    time: string,
-    temperature_2m: string,
-    precipitation_probability: string,
-    surface_pressure: string,
-    visibility: string,
-    windspeed_10m: string,
-    winddirection_10m: string
+  time: string,
+  temperature_2m: string,
+  precipitation_probability: string,
+  surface_pressure: string,
+  visibility: string,
+  windspeed_10m: string,
+  winddirection_10m: string
 }
 
-type Hourly = {
-    time: string[],
-    temperature_2m: number[],
-    precipitation_probability: number[],
-    surface_pressure: number[],
-    visibility: number[],
-    windspeed_10m: number[],
-    winddirection_10m: number[]
+export type Hourly = {
+  time: string[],
+  temperature_2m: number[],
+  precipitation_probability: number[],
+  surface_pressure: number[],
+  visibility: number[],
+  windspeed_10m: number[],
+  winddirection_10m: number[],
+  weathercode: number[],
 }
 
 export interface HourlyWeather extends CommonData {

@@ -1,7 +1,7 @@
-import { getCurrentWeather, getDailyWeather } from './api'
+import { getCurrentWeather } from './api'
 import { weatherStatus } from './weather-code'
 import * as bootstrap from 'bootstrap'
-import { Daily, DailyWeather } from './types'
+import { Daily, Hourly } from './types'
 
 const city = document.getElementById('city') as HTMLDivElement
 // const cityName = city.querySelector('.city__name') as HTMLParagraphElement
@@ -9,7 +9,8 @@ const cityTemperature = city.querySelector('.city__current-temperature') as HTML
 const cityWeatherStatus = city.querySelector('.city__weather-status') as HTMLParagraphElement
 const cityMaxTemperature = city.querySelector('.city__max-t') as HTMLParagraphElement
 const cityMinTemperature = city.querySelector('.city__min-t') as HTMLParagraphElement
-const cardList = document.getElementById('dailyForecast') as HTMLDivElement
+const dailyCardList = document.getElementById('dailyForecast') as HTMLDivElement
+const hourlyCardList = document.getElementById('hourlyForecast') as HTMLDivElement
 
 const triggerTabList = document.querySelectorAll('#myTab button')
 
@@ -38,7 +39,7 @@ export const showCurrentWeather = () => {
   })
 }
 
-const editDate = (date: string): string => {
+const editDailyDate = (date: string): string => {
   const options: Intl.DateTimeFormatOptions = {
     day: 'numeric',
     month: 'short'
@@ -102,26 +103,37 @@ const createWeatherCard = (title: string, picture: string, text: string): HTMLDi
   return card
 }
 
-const formCardList = () => getDailyWeather().then(response => response.daily.time.map((time, index) => {
-  const title = editDate(time)
-  const picture = determineWeatherIco(response.daily.weathercode[index])
-  const text = `${Math.round((response.daily.temperature_2m_max[index] + response.daily.temperature_2m_min[index]) / 2)}`
-  return createWeatherCard(title, picture, text)
-}))
-
-export const appendCardList = async () => {
-  const cards = await formCardList()
-  cards.forEach((card) => cardList.append(card))
-}
-
-export const appendCard = (daily: Daily) => {
+export const appendDailyWeatherCard = (daily: Daily) => {
   const cards = daily.time.map((time, index) => {
 
-    const title = editDate(time)
+    const title = editDailyDate(time)
     const picture = determineWeatherIco(daily.weathercode[index])
-    const text = `${Math.round((daily.temperature_2m_max[index] + daily.temperature_2m_min[index]) / 2)}`
+    const text = `${Math.round((daily.temperature_2m_max[index] + daily.temperature_2m_min[index]) / 2)}°`
 
     return createWeatherCard(title, picture, text)
   })
-  cardList.append(...cards)
+  dailyCardList.append(...cards)
+}
+
+const editHourlyDate = (hour: string): string => {
+  const date = new Date(hour);
+
+  const options: Intl.DateTimeFormatOptions = {
+    hour: 'numeric',
+    hour12: true
+  }
+
+  return new Intl.DateTimeFormat('en-AU', options).format(date).toUpperCase()
+}
+
+export const appendHourlyWeatherCard = (hourly: Hourly) => {
+  const cards = hourly.time.map((time, index) => {
+
+    const title = editHourlyDate(time)
+    const picture = determineWeatherIco(hourly.weathercode[index])
+    const text = `${Math.round(hourly.temperature_2m[index]) }°`
+
+    return createWeatherCard(title, picture, text)
+  })
+  hourlyCardList.append(...cards)
 }
