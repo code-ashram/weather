@@ -27,6 +27,7 @@ export type Hourly = {
   windspeed_10m: number[],
   winddirection_10m: number[],
   weathercode: number[],
+  relativehumidity_2m: number[],
 }
 
 export interface HourlyWeather extends CommonData {
