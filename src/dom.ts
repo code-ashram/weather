@@ -1,8 +1,7 @@
-import { getCurrentWeather } from './api'
+import { getCurrentWeather, getHourlyWeather } from './api'
 import { weatherStatus } from './weather-code'
 import * as bootstrap from 'bootstrap'
 import { Daily, Hourly } from './types'
-import { createLogger } from 'vite'
 
 const city = document.getElementById('city') as HTMLDivElement
 // const cityName = city.querySelector('.city__name') as HTMLParagraphElement
@@ -96,14 +95,27 @@ const createListItem = (text: string): HTMLLIElement => {
   return li
 }
 
-const createWeatherCard = (title: string, picture: string, text: string): HTMLDivElement => {
+const createWeatherCard = (...weatherData: string[]): HTMLDivElement => {
   console.log('Капитан получил данные')
+  // title: string, picture: string, text: string, precipitations: string, pressure: string, wind: string, visibility: string, humidity: string
 
   const card = document.createElement('div') as HTMLDivElement
   card.classList.add('card', 'forecast__card')
 
-  card.addEventListener('click', ()=> {
-    console.log('Нужно делегировать задачу лейтенанту')
+  const weatherParameters: string[] = [
+    `Precipitations: ${weatherData[3]} mm`,
+    `Atmospheric pressure: ${weatherData[4]} Pha`,
+    `Visibility: ${weatherData[5]} m`,
+    `Wind: ${weatherData[6]} M/h, ${weatherData[7]} degree`,
+    `Humidity: ${weatherData[8]} %`
+  ]
+
+  card.addEventListener('click', () => {
+
+    const li = weatherParameters.map((parameter) => createListItem(parameter))
+
+    details.replaceChildren(...li)
+
   })
 
   const cardBody = document.createElement('div') as HTMLDivElement
@@ -111,9 +123,9 @@ const createWeatherCard = (title: string, picture: string, text: string): HTMLDi
 
   const cardTitle = document.createElement('h5') as HTMLHeadingElement
   cardTitle.classList.add('card-title', 'forecast__card-title')
-  cardTitle.textContent = title
+  cardTitle.textContent = weatherData[0]
 
-  if (title === editHourlyDate(`${new Date()}`)) {
+  if (weatherData[0] === editHourlyDate(`${new Date()}`)) {
     card.id = 'now'
     cardTitle.textContent = 'Now'
   }
@@ -121,11 +133,11 @@ const createWeatherCard = (title: string, picture: string, text: string): HTMLDi
   const cardImg = document.createElement('img') as HTMLImageElement
   cardImg.classList.add('card-img-top')
   cardImg.alt = 'weather ico'
-  cardImg.src = picture
+  cardImg.src = weatherData[1]
 
   const cardText = document.createElement('p') as HTMLParagraphElement
   cardText.classList.add('card-text', 'forecast__card-text')
-  cardText.textContent = text
+  cardText.textContent = weatherData[2]
 
   cardBody.append(cardTitle, cardImg, cardText)
   card.append(cardBody)
@@ -156,14 +168,36 @@ export const appendHourlyWeatherCards = (hourly: Hourly) => {
   const cards = hourly.time.map((time, index) => {
 
     console.log(`${index} Майор получил папку с данными`)
+
     const title = editHourlyDate(time)
     const picture = determineWeatherIco(hourly.weathercode[index])
-    const text = `${Math.round(hourly.temperature_2m[index])}°`
-    const card = createWeatherCard(title, picture, text)
+    const text = `${Math.round(hourly.temperature_2m[index])}`
+    const precipitations = `${hourly.precipitation_probability[index]}`
+    const pressure = `${hourly.surface_pressure[index]}`
+    const visibility = `${hourly.visibility[index]}`
+    const wind = `${hourly.windspeed_10m[index]}`
+    const windDirection = `${hourly.winddirection_10m[index]}`
+    const humidity = `${hourly.relativehumidity_2m[index]}`
+
+    const card = createWeatherCard(title, picture, text, precipitations, pressure, visibility, wind, windDirection, humidity)
 
     console.log(`${index} Майор вернул карточку с данными`)
+
     return card
   })
+
+  // const weatherDetails = hourly.time.map((time, index) => {
+  //
+  //   const li: string[] = [
+  //     `Precipitations: ${hourly.precipitation_probability[index]} mm`,
+  //     `Atmospheric pressure: ${hourly.surface_pressure[index]} Pha`,
+  //     `Visibility: ${hourly.visibility[index]} m`,
+  //     `Wind: ${hourly.windspeed_10m[index]} M/h, ${hourly.winddirection_10m} degree`,
+  //     `Humidity: ${hourly.relativehumidity_2m[index]} %`
+  //   ]
+  //
+  // })
+
   hourlyCardList.append(...cards)
   scrollToPresentHour()
   console.log('Полковник добавил данные')
