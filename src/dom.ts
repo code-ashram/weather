@@ -1,10 +1,9 @@
-import { getCurrentWeather, getHourlyWeather } from './api'
+import { getCurrentWeather } from './api'
 import { weatherStatus } from './weather-code'
 import * as bootstrap from 'bootstrap'
 import { Daily, Hourly } from './types'
 
 const city = document.getElementById('city') as HTMLDivElement
-// const cityName = city.querySelector('.city__name') as HTMLParagraphElement
 const cityTemperature = city.querySelector('.city__current-temperature') as HTMLParagraphElement
 const cityWeatherStatus = city.querySelector('.city__weather-status') as HTMLParagraphElement
 const cityMaxTemperature = city.querySelector('.city__max-t') as HTMLParagraphElement
@@ -88,6 +87,16 @@ const determineWeatherIco = (weatherCode: number): string => {
   return cardImg
 }
 
+const editToNormaTime = (date: string): string => {
+  const time = new Date(date)
+  const options: Intl.DateTimeFormatOptions = {
+    day: undefined,
+    hour: 'numeric',
+    minute: 'numeric'
+  }
+  return new Intl.DateTimeFormat('en-AU', options).format(time).toUpperCase()
+}
+
 const createListItem = (text: string): HTMLLIElement => {
   const li = document.createElement('li') as HTMLLIElement
   li.classList.add('list-group-item', 'weather__info')
@@ -96,8 +105,7 @@ const createListItem = (text: string): HTMLLIElement => {
 }
 
 const createWeatherCard = (title: string, picture: string, text: string, ...weatherData: string[]): HTMLDivElement => {
-  console.log('Капитан получил данные')
-  // title: string, picture: string, text: string, precipitations: string, pressure: string, wind: string, visibility: string, humidity: string
+  // console.log('Капитан получил данные')
 
   const card = document.createElement('div') as HTMLDivElement
   card.classList.add('card', 'forecast__card')
@@ -134,21 +142,10 @@ const createWeatherCard = (title: string, picture: string, text: string, ...weat
   cardBody.append(cardTitle, cardImg, cardText)
   card.append(cardBody)
 
-  console.log('Капитан вернул карточку с данными')
+  // console.log('Капитан вернул карточку с данными')
   return card
 }
 
-export const appendDailyWeatherCard = (daily: Daily) => {
-  const cards = daily.time.map((time, index) => {
-
-    const title = editDailyDate(time)
-    const picture = determineWeatherIco(daily.weathercode[index])
-    const text = `${Math.round((daily.temperature_2m_max[index] + daily.temperature_2m_min[index]) / 2)}°`
-
-    return createWeatherCard(title, picture, text)
-  })
-  dailyCardList.append(...cards)
-}
 
 const scrollToPresentHour = () => {
   const now = document.getElementById('now') as HTMLDivElement
@@ -157,10 +154,10 @@ const scrollToPresentHour = () => {
 }
 
 export const appendHourlyWeatherCards = (hourly: Hourly) => {
-  console.log('Полковник получил данные')
+  // console.log('Полковник получил данные')
   const cards = hourly.time.map((time, index) => {
 
-    console.log(`${index} Майор получил папку с данными`)
+    // console.log(`${index} Майор получил папку с данными`)
 
     const title = editHourlyDate(time)
     const picture = determineWeatherIco(hourly.weathercode[index])
@@ -171,14 +168,37 @@ export const appendHourlyWeatherCards = (hourly: Hourly) => {
     const wind = `Wind: ${hourly.windspeed_10m[index]} M/h, ${hourly.winddirection_10m[index]} degree`
     const humidity = `Humidity: ${hourly.relativehumidity_2m[index]} %`
 
-    const card = createWeatherCard(title, picture, text, precipitations, pressure, visibility, wind, humidity)
+    return createWeatherCard(title, picture, text, precipitations, pressure, visibility, wind, humidity)
 
-    console.log(`${index} Майор вернул карточку с данными`)
-
-    return card
+    // console.log(`${index} Майор вернул карточку с данными`)
   })
 
   hourlyCardList.append(...cards)
   scrollToPresentHour()
-  console.log('Полковник добавил данные')
+  // console.log('Полковник добавил данные')
+
 }
+export const appendDailyWeatherCard = (daily: Daily) => {
+  const cards = daily.time.map((time, index) => {
+
+    const title = editDailyDate(time)
+    const picture = determineWeatherIco(daily.weathercode[index])
+    const text = `${Math.round((daily.temperature_2m_max[index] + daily.temperature_2m_min[index]) / 2)}°`
+    let status = 'string'
+    const temperature = `Max t°: ${Math.round(daily.temperature_2m_max[index])}, Min t°: ${Math.round(daily.temperature_2m_min[index])}`
+    const wind = `Wind: ${daily.windspeed_10m_max[index]} M/h, ${daily.winddirection_10m_dominant[index]} degree`
+    const precipitation = `Precipitation probability: ${daily.precipitation_probability_max[index]} mm`
+    const sun = `Sunrise: ${editToNormaTime(daily.sunrise[index])}, Sunset: ${editToNormaTime(daily.sunset[index])}`
+
+    weatherStatus.forEach((weather, weatherCode) => {
+      if (daily.weathercode[weatherCode] === weatherCode) {
+        status = `${weather}`
+      }
+    })
+
+    return createWeatherCard(title, picture, text, status, temperature, wind, precipitation, sun)
+  })
+  dailyCardList.append(...cards)
+}
+
+

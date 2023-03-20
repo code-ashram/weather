@@ -55,6 +55,8 @@ export type Daily = {
   windspeed_10m_max: number[],
   winddirection_10m_dominant: number[],
   weathercode: number[],
+  sunrise: string[],
+  sunset: string[],
 }
 
 export interface DailyWeather extends CommonData {

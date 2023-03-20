@@ -13,7 +13,7 @@ getCurrentWeather().then(result => console.log(result))
 
 showCurrentWeather()
 getHourlyWeather().then(({hourly}) => {
-  console.log('Генерал дал данные')
+  // console.log('Генерал дал данные')
   appendHourlyWeatherCards(hourly)
 })
 getDailyWeather().then(({daily}) => appendDailyWeatherCard(daily))
