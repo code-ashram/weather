@@ -1,18 +1,9 @@
-import { getCurrentWeather } from './api'
+import { getCurrentWeather } from '../api'
 import { weatherStatus } from './weather-code'
+import {cityTemperature, cityWeatherStatus, cityMaxTemperature, cityMinTemperature, dailyTabBtn, dailyCardList, hourlyCardList, details, triggerTabList} from './constants'
 import * as bootstrap from 'bootstrap'
-import { Daily, Hourly } from './types'
-
-const city = document.getElementById('city') as HTMLDivElement
-const cityTemperature = city.querySelector('.city__current-temperature') as HTMLParagraphElement
-const cityWeatherStatus = city.querySelector('.city__weather-status') as HTMLParagraphElement
-const cityMaxTemperature = city.querySelector('.city__max-t') as HTMLParagraphElement
-const cityMinTemperature = city.querySelector('.city__min-t') as HTMLParagraphElement
-const dailyCardList = document.getElementById('dailyForecast') as HTMLDivElement
-const hourlyCardList = document.getElementById('hourlyForecast') as HTMLDivElement
-const details = document.getElementById('details') as HTMLUListElement
-
-const triggerTabList = document.querySelectorAll('#myTab button')
+import { Daily, Hourly } from '../types'
+import { determineWeatherIco, determineWindDirection, editDailyDate, editHourlyDate, editTime } from './utils'
 
 triggerTabList.forEach(triggerEl => {
   const tabTrigger = new bootstrap.Tab(triggerEl)
@@ -20,9 +11,13 @@ triggerTabList.forEach(triggerEl => {
   triggerEl.addEventListener('click', event => {
     event.preventDefault()
     tabTrigger.show()
+
+    const firstDailyCard = dailyCardList.firstChild as HTMLDivElement
+    event.target === dailyTabBtn
+      ? firstDailyCard.click()
+      : scrollToPresentHour()
   })
 })
-
 export const showCurrentWeather = () => {
   getCurrentWeather().then(response => {
     cityTemperature.textContent = `${Math.round(response.current_weather.temperature)}°`
@@ -38,63 +33,10 @@ export const showCurrentWeather = () => {
   })
 }
 
-const editHourlyDate = (hour: string): string => {
-  const date = new Date(hour)
-
-  const options: Intl.DateTimeFormatOptions = {
-    hour: 'numeric',
-    hour12: true
-  }
-
-  return new Intl.DateTimeFormat('en-AU', options).format(date).toUpperCase()
-}
-
-const editDailyDate = (date: string): string => {
-  const options: Intl.DateTimeFormatOptions = {
-    day: 'numeric',
-    month: 'short'
-  }
-  return new Date(date).toLocaleDateString('en-GB', options)
-}
-
-const determineWeatherIco = (weatherCode: number): string => {
-  let cardImg = ''
-
-  if (weatherCode <= 9) {
-    cardImg = 'src/img/sunny.png'
-  } else if (weatherCode > 9 && weatherCode < 20) {
-    cardImg = 'src/img/sunny_intervals.png'
-  } else if (weatherCode >= 20 && weatherCode < 30) {
-    cardImg = 'src/img/cloudy_with_light_snow.png'
-  } else if (weatherCode >= 30 && weatherCode < 40) {
-    cardImg = 'src/img/wind.png'
-  } else if (weatherCode >= 40 && weatherCode < 50) {
-    cardImg = 'src/img/mist.png'
-  } else if (weatherCode >= 50 && weatherCode < 60) {
-    cardImg = 'src/img/drizzle.png'
-  } else if (weatherCode >= 60 && weatherCode < 70) {
-    cardImg = 'src/img/cloudy_with_light_rain.png'
-  } else if (weatherCode >= 70 && weatherCode < 80) {
-    cardImg = 'src/img/cloudy_with_light_snow.png'
-  } else if (weatherCode >= 80 && weatherCode < 90) {
-    cardImg = 'src/img/cloudy_with_heavy_rain.png'
-  } else if (weatherCode >= 90 && weatherCode < 99) {
-    cardImg = 'src/img/thunderstorms.png'
-  } else {
-    console.log('Error!')
-  }
-
-  return cardImg
-}
-
-const editTime = (date: string): string => {
-  const time = new Date(date)
-  const options: Intl.DateTimeFormatOptions = {
-    day: undefined,
-    hour: 'numeric',
-    minute: 'numeric'
-  }
-  return new Intl.DateTimeFormat('en-AU', options).format(time).toUpperCase()
+const scrollToPresentHour = () => {
+  const now = document.getElementById('now') as HTMLDivElement
+  now.scrollIntoView({ inline: 'center' })
+  now.click()
 }
 
 const createListItem = (text: string): HTMLLIElement => {
@@ -106,12 +48,19 @@ const createListItem = (text: string): HTMLLIElement => {
 
 const createWeatherCard = (title: string, picture: string, text: string, ...weatherData: string[]): HTMLDivElement => {
   // console.log('Капитан получил данные')
-
   const card = document.createElement('div') as HTMLDivElement
   card.classList.add('card', 'forecast__card')
 
   card.addEventListener('click', () => {
     const li = weatherData.map((parameter) => createListItem(parameter))
+
+    document.querySelectorAll('.forecast__card').forEach((card) => {
+      if (card.classList.contains('active')) {
+        card.classList.remove('active')
+      }
+    })
+    card.classList.add('active')
+
     details.replaceChildren(...li)
   })
 
@@ -125,6 +74,7 @@ const createWeatherCard = (title: string, picture: string, text: string, ...weat
   if (title === editHourlyDate(`${new Date()}`)) {
     card.id = 'now'
     cardTitle.textContent = 'Now'
+    card.classList.add('active')
   }
 
   const cardImg = document.createElement('img') as HTMLImageElement
@@ -138,16 +88,8 @@ const createWeatherCard = (title: string, picture: string, text: string, ...weat
 
   cardBody.append(cardTitle, cardImg, cardText)
   card.append(cardBody)
-
   // console.log('Капитан вернул карточку с данными')
   return card
-}
-
-
-const scrollToPresentHour = () => {
-  const now = document.getElementById('now') as HTMLDivElement
-  now.scrollIntoView({ inline: 'center' })
-  now.click()
 }
 
 export const appendHourlyWeatherCards = (hourly: Hourly) => {
@@ -186,15 +128,11 @@ export const appendDailyWeatherCard = (daily: Daily) => {
     })
 
     const temperature = `Max t°: ${Math.round(daily.temperature_2m_max[index])}, Min t°: ${Math.round(daily.temperature_2m_min[index])}`
-    const wind = `Wind: ${daily.windspeed_10m_max[index]} M/h, ${daily.winddirection_10m_dominant[index]} degree`
+    const wind = `Wind: ${daily.windspeed_10m_max[index]} M/s, ${determineWindDirection(daily.winddirection_10m_dominant[index])}`
     const precipitation = `Precipitation probability: ${daily.precipitation_probability_max[index]} mm`
     const sun = `Sunrise: ${editTime(daily.sunrise[index])}, Sunset: ${editTime(daily.sunset[index])}`
-
-
 
     return createWeatherCard(title, picture, text, status, temperature, wind, precipitation, sun)
   })
   dailyCardList.append(...cards)
 }
-
-

@@ -1,0 +1,10 @@
+export const city = document.getElementById('city') as HTMLDivElement
+export const cityTemperature = city.querySelector('.city__current-temperature') as HTMLParagraphElement
+export const cityWeatherStatus = city.querySelector('.city__weather-status') as HTMLParagraphElement
+export const cityMaxTemperature = city.querySelector('.city__max-t') as HTMLParagraphElement
+export const cityMinTemperature = city.querySelector('.city__min-t') as HTMLParagraphElement
+export const dailyTabBtn = document.getElementById('dailyTab') as HTMLButtonElement
+export const dailyCardList = document.getElementById('dailyForecast') as HTMLDivElement
+export const hourlyCardList = document.getElementById('hourlyForecast') as HTMLDivElement
+export const details = document.getElementById('details') as HTMLUListElement
+export const triggerTabList = document.querySelectorAll('#myTab button')

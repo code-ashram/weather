@@ -48,14 +48,19 @@ p {
 .forecast__card {
   min-width: 60px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-#now {
-  background-color: #484848;
+.forecast__card.active {
+  background-color: #303748;
 }
 
 .forecast__card:not(:last-child) {
   margin-right: 14px;
+}
+
+.forecast__card:hover {
+  background-color: #35393e;
 }
 
 .forecast__card-body {
@@ -73,5 +78,6 @@ p {
 
 .weather__details {
   text-align: left;
+  cursor: pointer;
 }
 
