@@ -87,7 +87,7 @@ const determineWeatherIco = (weatherCode: number): string => {
   return cardImg
 }
 
-const editToNormaTime = (date: string): string => {
+const editTime = (date: string): string => {
   const time = new Date(date)
   const options: Intl.DateTimeFormatOptions = {
     day: undefined,
@@ -111,11 +111,8 @@ const createWeatherCard = (title: string, picture: string, text: string, ...weat
   card.classList.add('card', 'forecast__card')
 
   card.addEventListener('click', () => {
-
     const li = weatherData.map((parameter) => createListItem(parameter))
-
     details.replaceChildren(...li)
-
   })
 
   const cardBody = document.createElement('div') as HTMLDivElement
@@ -156,9 +153,7 @@ const scrollToPresentHour = () => {
 export const appendHourlyWeatherCards = (hourly: Hourly) => {
   // console.log('Полковник получил данные')
   const cards = hourly.time.map((time, index) => {
-
     // console.log(`${index} Майор получил папку с данными`)
-
     const title = editHourlyDate(time)
     const picture = determineWeatherIco(hourly.weathercode[index])
     const text = `${Math.round(hourly.temperature_2m[index])}`
@@ -169,32 +164,33 @@ export const appendHourlyWeatherCards = (hourly: Hourly) => {
     const humidity = `Humidity: ${hourly.relativehumidity_2m[index]} %`
 
     return createWeatherCard(title, picture, text, precipitations, pressure, visibility, wind, humidity)
-
     // console.log(`${index} Майор вернул карточку с данными`)
   })
-
   hourlyCardList.append(...cards)
   scrollToPresentHour()
   // console.log('Полковник добавил данные')
-
 }
+
 export const appendDailyWeatherCard = (daily: Daily) => {
   const cards = daily.time.map((time, index) => {
 
     const title = editDailyDate(time)
     const picture = determineWeatherIco(daily.weathercode[index])
     const text = `${Math.round((daily.temperature_2m_max[index] + daily.temperature_2m_min[index]) / 2)}°`
-    let status = 'string'
+    let status = ''
+
+    weatherStatus.forEach((weather, weatherCode) => {
+      if (daily.weathercode[index] === weatherCode) {
+        status = weather
+      }
+    })
+
     const temperature = `Max t°: ${Math.round(daily.temperature_2m_max[index])}, Min t°: ${Math.round(daily.temperature_2m_min[index])}`
     const wind = `Wind: ${daily.windspeed_10m_max[index]} M/h, ${daily.winddirection_10m_dominant[index]} degree`
     const precipitation = `Precipitation probability: ${daily.precipitation_probability_max[index]} mm`
-    const sun = `Sunrise: ${editToNormaTime(daily.sunrise[index])}, Sunset: ${editToNormaTime(daily.sunset[index])}`
+    const sun = `Sunrise: ${editTime(daily.sunrise[index])}, Sunset: ${editTime(daily.sunset[index])}`
 
-    weatherStatus.forEach((weather, weatherCode) => {
-      if (daily.weathercode[weatherCode] === weatherCode) {
-        status = `${weather}`
-      }
-    })
+
 
     return createWeatherCard(title, picture, text, status, temperature, wind, precipitation, sun)
   })
